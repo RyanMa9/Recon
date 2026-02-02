@@ -1,5 +1,7 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+console.log("API URL:", process.env.NEXT_PUBLIC_API_URL);
+
 // function to make request to backend api and search for given fighter name/id based on text input
 export async function searchFighter(name: string) {
   const result = await fetch(
