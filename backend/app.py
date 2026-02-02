@@ -1,6 +1,7 @@
 from flask import Flask
 from routes.fighters import fighter_bp
 from flask_cors import CORS
+import os
 
 
 
