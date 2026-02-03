@@ -19,6 +19,9 @@ def fetch_from_db(query, columns, params=None):
 ## Function to query database to search for a particular fighter name
 def search_fighters_by_name(name):
 
+    if not name:
+        return []  # don't query DB if input is empty
+
     query = """
     SELECT
         fighter_id,
@@ -33,14 +36,12 @@ def search_fighters_by_name(name):
         NULLIF(stance, 'Unknown') AS stance
     FROM fighters
     WHERE
-        - Split the search term into words
-        %(first_word)s ILIKE first_name
-        OR %(first_word)s ILIKE last_name
-        OR %(first_word)s ILIKE nickname
+        first_name ILIKE %(first_word)s 
+        OR last_name ILIKE %(first_word)s 
+        OR nickname ILIKE %(first_word)s  
         OR (first_name || ' ' || last_name) ILIKE %(full_name)s;
     """
-
-    # Parameters for partial and full-name match
+    
     params = {
         "first_word": f"%{name.split()[0]}%",  # just the first word for faster partial match
         "full_name": f"%{name}%"               
