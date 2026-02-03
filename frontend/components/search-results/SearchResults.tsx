@@ -10,7 +10,7 @@ interface ResultsProps {
 export default function Searchresults({ result }: ResultsProps) {
   // creates cards with the given result data
   return (
-    <div className="w-full grid grid-cols-4 gap-4">
+    <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4 md:px-0">
       {result.map((fighter) => (
         <Fightercard
           key={fighter.fighter_id}

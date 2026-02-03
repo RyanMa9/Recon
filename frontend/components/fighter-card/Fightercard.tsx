@@ -20,11 +20,11 @@ export default function Fightercard({
   return (
     <a href={`/fighters/${id}`}>
       <Card
-        className="w-64 flex flex-col items-center text-center p-4 gap-3
-             border-b-2 border-transparent hover:border-b-[#d7172e] transition-all cursor-pointer rounded"
+        className="w-full max-w-xs flex flex-col items-center text-center p-4 gap-3
+                   border-b-2 border-transparent hover:border-b-[#d7172e] transition-all cursor-pointer rounded"
       >
         <CardContent className="flex flex-col items-center gap-2">
-          <Avatar className="w-15 h-15">
+          <Avatar className="w-16 h-16">
             <AvatarImage
               src="/figure.png"
               className="object-cover rounded-full"

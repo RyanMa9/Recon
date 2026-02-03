@@ -10,8 +10,8 @@ export default function app() {
     <div>
       <Navbar></Navbar>
       <section className="min-h-[60vh] grid place-items-center pt-24">
-        <div className="grid gap-8 text-center">
-          <h1 className="text-9xl font-bold">
+        <div className="grid gap-8 text-center px-4 md:px-0">
+          <h1 className="text-5xl md:text-9xl font-bold">
             <Typewriter
               words={["Tendencies.", "Weaknesses.", "Traits."]}
               loop={0}

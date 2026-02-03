@@ -10,7 +10,9 @@ export default function Navbar() {
                     bg-[#141415] shadow-sm z-50 backdrop-blur"
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl font-bold text-white font-mono">Recon</span>
+        <Link href="/">
+          <span className="text-xl font-bold text-white font-mono">Recon</span>
+        </Link>
       </div>
 
       <div className="flex items-center gap-6">
