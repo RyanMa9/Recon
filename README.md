@@ -99,7 +99,7 @@ Open http://localhost:3000 in your browser
 
 - This repository includes a small sample dataset for testing and demonstration purposes that contains just 3 fighters (Jon "Bones" Jones, Alvin "Goozie" Hines, and Tom Aaron) and 1 fight each for Goozie and Bones.
 - The app is fully functional with the sample data, so you can explore fighter profiles, filters, and visualizations for those fighters.
-= The full dataset (~50k fighter records) is not included here to keep the repo lightweight. Scraper and data can be provided upon request.
+- The full dataset (~50k fighter records) is not included here to keep the repo lightweight. Scraper and data can be provided upon request.
 
 ## License
 
