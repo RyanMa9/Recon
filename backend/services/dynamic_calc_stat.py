@@ -1,19 +1,46 @@
 from db import get_db_connection
 import pandas as pd, numpy as np
-import datetime
+from datetime import date, timedelta
 
 
 
 ## Filters for fighter cumulative percentile stats based on a given period of time and based on a given division 
 def get_fighter_stats_percentiles_dynamically(fighter_id, division, years):
 
+    
+    start_date = date.today() - timedelta(days=365*years)  
     # query the right rows 
-    query = "SELECT * FROM round_stats"
+    query = "SELECT " \
+        "fight_id, " \
+        "fight_round, " \
+        "division, " \
+        "fighter_id, " \
+        "distance_significant_strikes_attempted, " \
+        "distance_significant_strikes_landed, " \
+        "clinch_significant_strikes_attempted, " \
+        "clinch_significant_strikes_landed, " \
+        "takedown_attempted, " \
+        "takedown_landed, " \
+        "submission_attempted, " \
+        "control_time, " \
+        "ground_significant_strikes_attempted, " \
+        "ground_significant_strikes_landed, " \
+        "round_minutes, " \
+        "not_decision " \
+    "FROM round_stats " \
+    "WHERE fight_date::date >= %(start_date)s " \
+    "AND LOWER(division) = LOWER(%(division)s)"
+
+    params = {
+    'start_date': start_date,
+    'division': division}
+
+
 
     conn = get_db_connection()
     curr = conn.cursor()
 
-    curr.execute(query)
+    curr.execute(query, params)
     rows = curr.fetchall()
     columns = [desc[0] for desc in curr.description]  # get column names
     curr.close()
@@ -22,15 +49,6 @@ def get_fighter_stats_percentiles_dynamically(fighter_id, division, years):
 
 
     fighter_stats = pd.DataFrame(rows, columns= columns)
-
-
-    # filter for date to ensure data is up to date 
-    fighter_stats['fight_date'] = pd.to_datetime(fighter_stats['fight_date'], errors='coerce')
-    year = datetime.datetime.now().year
-    year_mask = year - (fighter_stats['fight_date'].dt.year) <= years
-    fighter_stats = fighter_stats[year_mask]
-    fighter_stats = fighter_stats.drop(columns=['fight_date'])
-
 
 
     #merge fighter and opponent's stats to calculate fighter lifetime stats
@@ -43,12 +61,8 @@ def get_fighter_stats_percentiles_dynamically(fighter_id, division, years):
     fighter_stats = fighter_stats[fighter_stats['division_r'].str.lower() == division.lower()]
 
 
-    # drop unnecessary columns
-
-    columns_drop = ['time_ended_r', 'time_format_r', 'fight_round', 
-                    'round_ended_o', 'time_ended_o']
-
-    fighter_stats = fighter_stats.drop(columns_drop, axis=1)
+    # drop unnecessary column
+    fighter_stats = fighter_stats.drop(['fight_round', 'fight_id'], axis=1)
 
 
 
@@ -75,25 +89,21 @@ def get_fighter_stats_percentiles_dynamically(fighter_id, division, years):
     
     #drop rest of unnecessary
 
-    drop_cols_unnecessary = ['time_format_o', 'round_ended_r', 'knockdown_r', 'total_strikes_attempted_r', 'takedown_attempted_r', 'submission_attempted_r', 'reversals_r', 'control_time_r', 'significant_strikes_attempted_r', 
-                             'head_significant_strikes_attempted_r', 'body_significant_strikes_attempted_r', 'leg_significant_strikes_attempted_r', 'distance_significant_strikes_attempted_r', 
-                             'clinch_significant_strikes_attempted_r', 'ground_significant_strikes_attempted_r', 'total_rounds_r', 'body_significant_strikes_landed_r', 'total_strikes_landed_r', 
-                             'significant_strikes_landed_r', 'takedown_landed_r', 'leg_significant_strikes_landed_r', 'distance_significant_strikes_landed_r', 
-                             'clinch_significant_strikes_landed_r', 'ground_significant_strikes_landed_r', 'head_significant_strikes_landed_r', 'round_minutes_r', 
-                             'not_decision_r', 'knockdown_o', 'total_strikes_attempted_o', 'takedown_attempted_o', 'submission_attempted_o', 'reversals_o', 'control_time_o',
-                               'significant_strikes_attempted_o', 'head_significant_strikes_attempted_o', 'body_significant_strikes_attempted_o', 'leg_significant_strikes_attempted_o', 
-                               'distance_significant_strikes_attempted_o', 'clinch_significant_strikes_attempted_o', 'ground_significant_strikes_attempted_o', 'total_rounds_o', 
-                               'body_significant_strikes_landed_o', 'total_strikes_landed_o', 'significant_strikes_landed_o', 'takedown_landed_o', 'leg_significant_strikes_landed_o',
-                                 'distance_significant_strikes_landed_o', 'clinch_significant_strikes_landed_o', 'ground_significant_strikes_landed_o', 'head_significant_strikes_landed_o', 
-                                 'not_decision_o', 'round_minutes_o', 'division_o',  'fight_id', 
-                                'fighter_id_o', 'method_o', 'method_r', 'referee_o',  'referee_r',
+    drop_cols_unnecessary = ['takedown_attempted_r', 'submission_attempted_r', 'control_time_r', 'distance_significant_strikes_attempted_r', 
+                             'clinch_significant_strikes_attempted_r', 'ground_significant_strikes_attempted_r', 
+                            'takedown_landed_r', 'distance_significant_strikes_landed_r', 'clinch_significant_strikes_landed_r', 
+                            'ground_significant_strikes_landed_r', 'round_minutes_r', 
+                             'not_decision_r', 'takedown_attempted_o', 'submission_attempted_o', 'control_time_o',
+                               'distance_significant_strikes_attempted_o', 'clinch_significant_strikes_attempted_o', 'ground_significant_strikes_attempted_o', 
+                               'takedown_landed_o', 'distance_significant_strikes_landed_o', 'clinch_significant_strikes_landed_o', 'ground_significant_strikes_landed_o',
+                                 'not_decision_o', 'division_o', 'fighter_id_o', 'round_minutes_o'
                             ]
 
     fighter_stats = fighter_stats.drop(drop_cols_unnecessary, axis=1)
 
 
     # calculate percentiles for each stat by weight class
-    exclude = ['fighter_id_r', 'fight_date_o', 'division_r', 'round_minutes_r', 'not_decision_r', 'round_minutes_o', 'not_decision_o']
+    exclude = ['fighter_id_r', 'division_r']
     percentiles_to_calculate = [c for c in fighter_stats.columns if c not in exclude]
 
     ## to prevent weird data - need to see true efficiency: a fighter might fail a lot but be ranked higher than those who dont attempt any which would be bad
@@ -151,6 +161,9 @@ def get_fighter_stats_percentiles_dynamically(fighter_id, division, years):
     export = fighter_stats[(fighter_stats['fighter_id_r'] == fighter_id)]
     export = export.drop(drop_unnecessary_stats, axis=1)
     export = export.replace({np.nan: None})
+    print(fighter_stats.columns)
+    print(fighter_stats.head())
+
 
 
 
