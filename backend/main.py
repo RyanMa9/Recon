@@ -11,3 +11,8 @@ def create_app():
     return app
 
 app = create_app()
+
+
+if __name__ == "__main__":
+    # Only runs locally, not on Railway
+    app.run(debug=True)
