@@ -30,10 +30,3 @@ def stats(fighter_id):
 def metrics(fighter_id):
     return search_fighters_by_id_controller(fighter_id)
 
-
-'''
-@fighter_bp.route("/stats/<fighter_id>/round_stats", methods=["GET"])
-def round_stats(fighter_id):
-    return get_fighter_round_stats_controller(fighter_id)
-
-'''

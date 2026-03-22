@@ -35,13 +35,3 @@ def search_fighters_by_id_controller(fighter_id):
 
 
 
-
-
-
-'''
-
-def get_fighter_round_stats_controller(fighter_id):
-    fighter_round_stats = get_fighter_round_stats(fighter_id)
-    return jsonify(fighter_round_stats)
-
-'''
