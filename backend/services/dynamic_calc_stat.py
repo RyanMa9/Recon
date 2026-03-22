@@ -31,7 +31,7 @@ def get_fighter_stats_percentiles_dynamically(fighter_id, division, years):
             SUM(tdl_o)  AS tdl_opp,
             SUM(ctrl_o) AS ctrl_opp,
             SUM(gsl_o)  AS gsl_opp
-        FROM fighter_fight_stats_mv
+        FROM fighter_fight_stats_with_opp_stats
         WHERE fight_date::date >= %(start_date)s
           AND LOWER(division)  = LOWER(%(division)s)
         GROUP BY fighter_id
