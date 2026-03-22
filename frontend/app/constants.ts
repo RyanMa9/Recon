@@ -52,7 +52,7 @@ export const STAT_FIELDS: {
     key: "striking_efficiency_on_ground_percentile",
     label: "Striking Efficiency Ground",
     description:
-      "Ground Striking Accuracy: Ground Significant Strikes landed / Ground Strikes on Feet thrown",
+      "Ground Striking Accuracy: Ground Significant Strikes landed / Ground Strikes Significant Strikes thrown",
   },
   {
     key: "striking_output_on_feet_per_minute_percentile",
@@ -69,11 +69,12 @@ export const STAT_FIELDS: {
   {
     key: "striking_superiority_on_feet_per_minute_percentile",
     label: "Striking Superiority Feet",
-    description: "Standing Significant Strikes landed",
+    description:
+      "(Standing Significant Strikes landed - Standing Significant Strikes absorbed) / Round Minutes",
   },
   {
     key: "takedown_aggression_percentile",
-    label: "Submission Agression",
+    label: "Submission Aggression",
     description: "Agression on Ground: Submissions / Round Minutes",
   },
   {
@@ -84,7 +85,7 @@ export const STAT_FIELDS: {
   {
     key: "takedown_efficiency_percentile",
     label: "Takedown Efficiency",
-    description: "Takedown Accuracy: Takedowns Attempted / Takedowns Landed",
+    description: "Takedown Accuracy: Takedowns Landed / Takedowns Attempted",
   },
 ];
 

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Typewriter } from "react-simple-typewriter";
 
 // basic landing page
-export default function app() {
+export default function App() {
   return (
     <div>
       <Navbar></Navbar>
@@ -32,7 +32,6 @@ export default function app() {
           </div>
         </div>
       </section>
-      <section></section>
     </div>
   );
 }
