@@ -208,4 +208,36 @@ defensive_liability_takedowns, defensive_recovery_ground, outcome_volatility
 );
 
 
-
+-- Create materialized view with opponent stats
+CREATE MATERIALIZED VIEW fighter_fight_stats_with_opp_stats AS
+WITH paired AS (
+    SELECT
+        r.fight_id,
+        r.fight_round,
+        r.fighter_id,
+        r.distance_significant_strikes_attempted AS dsa_r,
+        r.distance_significant_strikes_landed AS dsl_r,
+        r.clinch_significant_strikes_attempted AS csa_r,
+        r.clinch_significant_strikes_landed AS csl_r,
+        r.takedown_attempted AS tda_r,
+        r.takedown_landed AS tdl_r,
+        r.submission_attempted AS suba_r,
+        r.control_time AS ctrl_r,
+        r.ground_significant_strikes_attempted AS gsa_r,
+        r.ground_significant_strikes_landed AS gsl_r,
+        r.round_minutes AS mins_r,
+        r.not_decision AS nd_r,
+        o.distance_significant_strikes_landed AS dsl_o,
+        o.clinch_significant_strikes_landed AS csl_o,
+        o.takedown_landed AS tdl_o,
+        o.control_time AS ctrl_o,
+        o.ground_significant_strikes_landed AS gsl_o,
+        r.division,
+        r.fight_date
+    FROM round_stats r
+    JOIN round_stats o
+      ON r.fight_id = o.fight_id
+     AND r.fight_round = o.fight_round
+     AND r.fighter_id != o.fighter_id
+)
+SELECT * FROM paired;
