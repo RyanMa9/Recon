@@ -87,17 +87,20 @@ NEXT_PUBLIC_API_BASE=http://127.0.0.1:5000/
 ```
 
 ### 7. Explore the App
+
 Run the frontend and backend servers in separate terminals.
 
-Frontend (Next.js):
-
+**Frontend (Next.js):**
+```bash
 cd frontend
 npm run dev
+```
 
-Backend (Flask):
-
+**Backend (Flask):**
+```bash
 cd backend
 python main.py
+```
 
 Once both servers are running, open your browser and navigate to:
 
