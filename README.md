@@ -104,7 +104,7 @@ python main.py
 
 Once both servers are running, open your browser and navigate to:
 
-http://localhost:3000
+localhost:3000
 
 ## Usage
 
