@@ -78,6 +78,7 @@ pip install -r requirements.txt
 ### 5. Create a .env file in the backend directory:
 ```bash
 DATABASE_URL=your_database_url
+FRONTEND_URL=http://localhost:3000
 ```
 
 ### 6. Create a .env.local file in the frontend directory:
@@ -86,8 +87,21 @@ NEXT_PUBLIC_API_BASE=http://127.0.0.1:5000/
 ```
 
 ### 7. Explore the App
-Open http://localhost:3000 in your browser
+Run the frontend and backend servers in separate terminals.
 
+Frontend (Next.js):
+
+cd frontend
+npm run dev
+
+Backend (Flask):iuts in
+
+cd backend
+python main.py
+
+Once both servers are running, open your browser and navigate to:
+
+http://localhost:3000
 
 ## Usage
 
