@@ -94,7 +94,7 @@ Frontend (Next.js):
 cd frontend
 npm run dev
 
-Backend (Flask):iuts in
+Backend (Flask):
 
 cd backend
 python main.py
